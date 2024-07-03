@@ -1,15 +1,13 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import jwtDecode from "jwt-decode";
+import { getCookie } from "../utils/GetCookie";
 
 const RequireAuth = ({ children }) => {
-  const location = useLocation();
-
   useEffect(() => {
     const checkTokenValidity = () => {
-      const token = localStorage.getItem("token");
+      const token = getCookie("token");
       if (!token) {
-        // No token found, redirect to external login page
+        // No token found, redirect to the login page on the authentication domain
         window.location.href = "https://blog-maker-two.vercel.app";
         return;
       }
@@ -17,22 +15,22 @@ const RequireAuth = ({ children }) => {
       try {
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
-          // Token expired, remove from localStorage and redirect to external login page
-          localStorage.removeItem("token");
+          // Token expired, remove cookie and redirect to login
+          document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app; SameSite=None; Secure";
           window.location.href = "https://blog-maker-two.vercel.app";
           return;
         }
       } catch (error) {
         console.error("Error decoding token:", error);
         // Handle any decoding errors (e.g., invalid token format)
-        localStorage.removeItem("token");
-        window.location.href = "https://blog-maker-two.vercel.app/login";
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app; SameSite=None; Secure";
+        window.location.href = "https://blog-maker-two.vercel.app";
         return;
       }
     };
 
     checkTokenValidity();
-  }, [location]);
+  }, []);
 
   return children;
 };
