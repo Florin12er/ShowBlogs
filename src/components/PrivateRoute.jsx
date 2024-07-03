@@ -15,15 +15,16 @@ const RequireAuth = ({ children }) => {
       try {
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
-          // Token expired, remove cookie and redirect to login
-          document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app; SameSite=None; Secure";
+          document.cookie =
+            "token=; path=/; domain=blogs-nine-steel.vercel.app; SameSite=None; Secure";
+
           window.location.href = "https://blog-maker-two.vercel.app";
           return;
         }
       } catch (error) {
         console.error("Error decoding token:", error);
-        // Handle any decoding errors (e.g., invalid token format)
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app; SameSite=None; Secure";
+        document.cookie =
+          "token=; path=/; domain=blogs-nine-steel.vercel.app; SameSite=None; Secure";
         window.location.href = "https://blog-maker-two.vercel.app";
         return;
       }
@@ -36,4 +37,3 @@ const RequireAuth = ({ children }) => {
 };
 
 export default RequireAuth;
-
