@@ -1,44 +1,22 @@
 import { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
+import ShowAllBlogs from "./routes/showAllBlogs";
+import NavBar from "./components/NavBar";
+import ShowBlog from "./routes/showBlog";
+import ShowAllUsers from "./routes/showAllUsers";
+import ShowUser from "./routes/showUser";
 function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "https://blogapi-production-fb2f.up.railway.app/user",
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    }
-
-    fetchData();
-  }, []);
   return (
-    <div>
-      {data && data.length > 0 ? (
-        <ul>
-          {data.map((item) => (
-            <li key={uuidv4()}>
-              <div>
-                <p>Username: {item.username}</p>
-                <p>Email: {item.email}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No data available</p>
-      )}
-    </div>
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<ShowAllBlogs />} />
+        <Route path="/blog/:id" element={<ShowBlog />}></Route>
+        <Route path="/user" element={<ShowAllUsers />}></Route>
+        <Route path="/user/:id" element={<ShowUser/>}></Route>
+      </Routes>
+    </>
   );
 }
 

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.rainbow-animation {
+  animation: rainbow 1.5s infinite;
+}
+
+@keyframes rainbow {
+  0% { background-color: #ff0000; } /* Red */
+  20% { background-color: #ff8c00; } /* Orange */
+  40% { background-color: #ffff00; } /* Yellow */
+  60% { background-color: #00ff00; } /* Green */
+  80% { background-color: #0000ff; } /* Blue */
+  100% { background-color: #800080; } /* Purple */
+}
+
