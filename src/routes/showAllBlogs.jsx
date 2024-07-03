@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
-
+import NavBar from "../components/NavBar";
 function truncateHTMLContent(html, maxLength) {
   const plainText =
     new DOMParser().parseFromString(html, "text/html").body.textContent || "";
@@ -39,6 +39,9 @@ function ShowAllBlogs() {
   }, []);
 
   return (
+<>
+            
+      <NavBar />
     <div className="bg-gray-100 min-h-screen py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-center mb-8">Blog Showcase</h1>
@@ -74,6 +77,7 @@ function ShowAllBlogs() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
