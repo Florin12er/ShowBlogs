@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import githubLogo from "../../public/github-original.svg"; // Adjust path as per your file structure
 
 function Login() {
@@ -26,21 +26,23 @@ function Login() {
       const response = await axios.post(
         "https://blogapi-production-fb2f.up.railway.app/user/login",
         { email, password },
-        { withCredentials: true },
+        { withCredentials: true }
       );
-      const { token } = response.data;
+      const { token, userId } = response.data; // Assuming userId is returned from backend
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId); // Store userId in local storage
       window.location.href = "/"; // Redirect to home/dashboard page after login
     } catch (error) {
       setError(error.response.data.message);
     }
   };
+
   const googleAuth = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.get(
         "https://blogapi-production-fb2f.up.railway.app/user/auth/google",
-        { withCredentials: true },
+        { withCredentials: true }
       );
       window.open(response.request.responseURL, "_blank"); // Open Google authentication in a new tab
     } catch (error) {
@@ -53,7 +55,7 @@ function Login() {
     try {
       const response = await axios.get(
         "https://blogapi-production-fb2f.up.railway.app/user/auth/github",
-        { withCredentials: true },
+        { withCredentials: true }
       );
       window.open(response.request.responseURL, "_blank"); // Open GitHub authentication in a new tab
     } catch (error) {
@@ -160,3 +162,4 @@ function Login() {
 }
 
 export default Login;
+

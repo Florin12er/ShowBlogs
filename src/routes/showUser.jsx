@@ -70,10 +70,6 @@ function ShowUser() {
     }, 2000);
   };
 
-  const handleImageUpload = () => {
-    // Implement image upload functionality here (frontend logic)
-    console.log("Image upload functionality to be implemented");
-  };
 
   return (
     <>
@@ -93,20 +89,6 @@ function ShowUser() {
                   <div>
                     <h2 className="text-2xl font-bold mb-2">{user.username}</h2>
                     <p className="text-gray-600 mb-2">{user.email}</p>
-                    <button
-                      onClick={handleImageUpload}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2"
-                    >
-                      Upload Image
-                    </button>
-                    <button
-                      onClick={() => handleShare(user._id)}
-                      className={`bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ${
-                        clickedUserId === user._id ? "rainbow-animation" : ""
-                      }`}
-                    >
-                      Share
-                    </button>
                   </div>
                 </div>
               </div>
