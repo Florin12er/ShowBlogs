@@ -42,7 +42,7 @@ function Update() {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "https://blogapi-production-fb2f.up.railway.app/blog/new",
+        "https://blogapi-production-fb2f.up.railway.app/blog/:id",
         {
           title,
           author: username,
@@ -154,10 +154,10 @@ function Update() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-300 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-300 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={isLoading}
             >
-              {isLoading ? 'Posting...' : 'Post Blog'}
+              {isLoading ? "Posting..." : "Post Blog"}
             </button>
           </div>
         </form>
@@ -167,4 +167,3 @@ function Update() {
 }
 
 export default Update;
-
