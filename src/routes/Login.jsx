@@ -26,7 +26,7 @@ function Login() {
       const response = await axios.post(
         "https://blogapi-production-fb2f.up.railway.app/user/login",
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       const { token, userId } = response.data; // Assuming userId is returned from backend
       localStorage.setItem("token", token);
@@ -42,7 +42,7 @@ function Login() {
     try {
       const response = await axios.get(
         "https://blogapi-production-fb2f.up.railway.app/user/auth/google",
-        { withCredentials: true }
+        { withCredentials: true },
       );
       window.open(response.request.responseURL, "_blank"); // Open Google authentication in a new tab
     } catch (error) {
@@ -55,7 +55,7 @@ function Login() {
     try {
       const response = await axios.get(
         "https://blogapi-production-fb2f.up.railway.app/user/auth/github",
-        { withCredentials: true }
+        { withCredentials: true },
       );
       window.open(response.request.responseURL, "_blank"); // Open GitHub authentication in a new tab
     } catch (error) {
@@ -113,31 +113,6 @@ function Login() {
           </button>
         </form>
         <div className="text-center mt-4">
-          <p className="text-sm text-gray-600 mb-2">Or login with:</p>
-          <div className="flex justify-center">
-            <button
-              onClick={googleAuth}
-              className="bg-white border-2 border-solid border-gray hover:bg-zinc-200 text-black py-2 px-4 rounded-md flex items-center space-x-2"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-                alt="Google"
-                className="h-5 w-5"
-              />
-              <span>Google</span>
-            </button>
-            <button
-              onClick={githubAuth}
-              className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md flex items-center space-x-2 ml-2"
-            >
-              <img
-                src={githubLogo}
-                alt="GitHub"
-                className="h-6 w-6 fill-current"
-              />
-              <span>GitHub</span>
-            </button>
-          </div>
         </div>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
@@ -162,4 +137,3 @@ function Login() {
 }
 
 export default Login;
-
