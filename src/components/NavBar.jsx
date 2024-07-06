@@ -1,11 +1,13 @@
-import axios from "axios";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { ThemeContext } from "../components/ThemeContext.jsx";
 
 function NavBar() {
-  const [error, setError] = useState(null);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
+  const [error, setError] = useState(null);
 
   const handleLogout = async (event) => {
     event.preventDefault();
@@ -18,7 +20,7 @@ function NavBar() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
       localStorage.removeItem("token");
@@ -30,7 +32,11 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-white border-b-2 border-solid border-black shadow-lg">
+    <nav
+      className={`bg-white border-b-2 border-solid border-black shadow-lg ${
+        theme === "dark" ? "bg-gray-500" : "bg-white"
+      }`}
+    >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="text-4xl font-bold">Blogs</div>
         <ul className="flex space-x-4">
@@ -41,7 +47,13 @@ function NavBar() {
             <Link to="/">See Blogs</Link>
           </li>
           <li className="hover:text-blue-500 font-bold cursor-pointer">
-            <Link to="https://blog-maker-two.vercel.app/">Blog Maker</Link>
+            <a
+              href="https://blog-maker-two.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Blog Maker
+            </a>
           </li>
         </ul>
         {token ? (
@@ -80,6 +92,32 @@ function NavBar() {
               </svg>
               <p>Logout</p>
             </button>
+
+            {/* Theme Switcher Dropdown */}
+            <div className="relative">
+              <select
+                className="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded-md shadow leading-tight focus:outline-none focus:border-blue-500"
+                value={theme}
+                onChange={(e) => toggleTheme(e.target.value)}
+              >
+                <option value="light">Light Mode</option>
+                <option value="dark">Dark Mode</option>
+                <option value="old-school">Old School (Black & White)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M9.293 14.707a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 12.586l-3.293-3.293a1 1 0 00-1.414 1.414l4 4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="space-x-4">
@@ -98,3 +136,4 @@ function NavBar() {
 }
 
 export default NavBar;
+

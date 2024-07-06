@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { renderToStaticMarkup } from "react-dom/server";
 import DOMPurify from "dompurify";
@@ -6,22 +6,22 @@ import NavBar from "../components/NavBar";
 import axios from "axios";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
-import ruby from "react-syntax-highlighter/dist/esm/languages/hljs/ruby"
-SyntaxHighlighter.registerLanguage("javascript", js);
-SyntaxHighlighter.registerLanguage("ruby", ruby)
+import ruby from "react-syntax-highlighter/dist/esm/languages/hljs/ruby";
+import { ThemeContext } from "../components/ThemeContext"; // Import ThemeContext
+import * as styles from "react-syntax-highlighter/dist/esm/styles/hljs";
 
-import {
-    atelierDuneLight,
-  docco,
-  qtcreatorLight,
-} from "react-syntax-highlighter/dist/esm/styles/hljs";
+SyntaxHighlighter.registerLanguage("javascript", js);
+SyntaxHighlighter.registerLanguage("ruby", ruby);
 
 function ShowBlog() {
   const { id } = useParams();
+  const { theme } = useContext(ThemeContext); // Get theme from ThemeContext
   const [blog, setBlog] = useState(null);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedStyle, setSelectedStyle] = useState(styles.docco); // Default style
+  const [availableStyles, setAvailableStyles] = useState([]);
 
   useEffect(() => {
     async function fetchBlog() {
@@ -53,6 +53,14 @@ function ShowBlog() {
 
     fetchBlog();
   }, [id]);
+
+  useEffect(() => {
+    // Extract available styles from imported styles object
+    const stylesArray = Object.values(styles).filter(
+      (style) => typeof style === "object" && style !== styles.docco, // Exclude docco, assuming it's the default
+    );
+    setAvailableStyles(stylesArray);
+  }, []);
 
   const handleSubmitComment = async (event) => {
     event.preventDefault();
@@ -142,12 +150,13 @@ function ShowBlog() {
         showLineNumbers={true}
         wrapLines
         language={language}
-        style={docco}
+        style={selectedStyle} // Use selected style here
       >
         {value}
       </SyntaxHighlighter>
     );
   };
+
   const renderHtmlWithSyntaxHighlighting = (htmlContent) => {
     const wrapper = document.createElement("div");
     wrapper.innerHTML = htmlContent;
@@ -163,9 +172,22 @@ function ShowBlog() {
     });
     return wrapper.innerHTML;
   };
+
+  // Function to handle style change
+  const handleStyleChange = (event) => {
+    const styleName = event.target.value;
+    setSelectedStyle(styles[styleName]);
+  };
+
+  // Apply theme-specific styles
+  const themeStyles = {
+    backgroundColor: theme === "dark" ? "#1a202c" : "#ffffff",
+    color: theme === "dark" ? "#ffffff" : "#1a202c",
+  };
+
   return (
-    <>
-      <NavBar />
+    <div style={themeStyles}>
+      <NavBar /> {/* Ensure NavBar also applies selected theme */}
       <div className="max-w-6xl mx-auto px-4 py-8">
         <article className="bg-white rounded-lg shadow-lg">
           <header className="p-6 bg-gray-100 rounded-t-lg">
@@ -178,9 +200,33 @@ function ShowBlog() {
                   {blog.links}
                 </a>
               </p>
+              <div className="mt-8">
+                <h2 className="font-bold mb-4">
+                                    Select Code theme:
+                </h2>
+                <select
+                  onChange={handleStyleChange}
+                  value={Object.keys(styles).find(
+                    (key) => styles[key] === selectedStyle,
+                  )}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                >
+                  {availableStyles.map((style, index) => (
+                    <option
+                      key={index}
+                      value={Object.keys(styles).find(
+                        (key) => styles[key] === style,
+                      )}
+                    >
+                      {Object.keys(styles).find((key) => styles[key] === style)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </header>
           <div className="p-14">
+            <h1 className="text-3xl">content:</h1>
             <div
               className="max-w-3xl prose"
               dangerouslySetInnerHTML={{
@@ -251,7 +297,7 @@ function ShowBlog() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

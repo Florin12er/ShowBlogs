@@ -12,10 +12,12 @@ import ResetRequest from "./routes/ResetRequest";
 import Settings from "./routes/Setting";
 import YourBlogs from "./routes/YourBlogs";
 import Update from "./routes/Update";
+import { ThemeProvider } from "./components/ThemeContext";
 
 function App() {
   return (
     <>
+            <ThemeProvider>
       <Routes>
         <Route
           path="/"
@@ -62,6 +64,7 @@ function App() {
         <Route path="/reset-request" element={<ResetRequest />} />
         <Route path="/reset" element={<ResetPassword />} />
       </Routes>
+      </ThemeProvider>
     </>
   );
 }
