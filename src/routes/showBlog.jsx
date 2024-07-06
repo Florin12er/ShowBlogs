@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import DOMPurify from 'dompurify';
-import NavBar from '../components/NavBar';
-import axios from 'axios';
-import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
-import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
-import csharp from 'react-syntax-highlighter/dist/esm/languages/prism/csharp';
-import cpp from 'react-syntax-highlighter/dist/esm/languages/prism/cpp';
-import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
-import ruby from "react-syntax-highlighter/dist/esm/languages/prism/ruby"
-
-SyntaxHighlighter.registerLanguage('jsx', jsx);
-SyntaxHighlighter.registerLanguage('javascript', javascript);
-SyntaxHighlighter.registerLanguage('csharp', csharp);
-SyntaxHighlighter.registerLanguage('cpp', cpp);
-SyntaxHighlighter.registerLanguage('python', python);
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { renderToStaticMarkup } from "react-dom/server";
+import DOMPurify from "dompurify";
+import NavBar from "../components/NavBar";
+import axios from "axios";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
+import ruby from "react-syntax-highlighter/dist/esm/languages/hljs/ruby"
+SyntaxHighlighter.registerLanguage("javascript", js);
 SyntaxHighlighter.registerLanguage("ruby", ruby)
+
+import {
+    atelierDuneLight,
+  docco,
+  qtcreatorLight,
+} from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 function ShowBlog() {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
-  const [commentContent, setCommentContent] = useState('');
+  const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`https://blogapi-production-fb2f.up.railway.app/blog/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `https://blogapi-production-fb2f.up.railway.app/blog/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
         if (!response.data.blog) {
-          throw new Error('Blog not found');
+          throw new Error("Blog not found");
         }
         setBlog(response.data.blog);
         setComments(
           response.data.blog.comments.map((comment) => ({
             ...comment,
             uuid: comment._id, // Assuming _id is the unique identifier for comments
-          }))
+          })),
         );
       } catch (error) {
-        console.error('Error fetching blog: ', error);
-        setError('Error fetching blog. Please try again later.');
+        console.error("Error fetching blog: ", error);
+        setError("Error fetching blog. Please try again later.");
       }
     }
 
@@ -57,59 +57,70 @@ function ShowBlog() {
   const handleSubmitComment = async (event) => {
     event.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-            const response = await axios.post(`https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment`, { content: commentContent }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment`,
+        { content: commentContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const newComment = {
         ...response.data.comment,
         uuid: response.data.comment._id,
       };
       setComments([...comments, newComment]);
-      setCommentContent('');
+      setCommentContent("");
     } catch (error) {
-      console.error('Error adding comment: ', error);
-      setError('Error adding comment. Please try again later.');
+      console.error("Error adding comment: ", error);
+      setError("Error adding comment. Please try again later.");
     }
   };
 
   const handleUpdateComment = async (commentId, updatedContent) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`, { content: updatedContent }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`,
+        { content: updatedContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setComments((prevComments) =>
         prevComments.map((comment) =>
           comment.uuid === commentId
             ? { ...comment, content: updatedContent }
-            : comment
-        )
+            : comment,
+        ),
       );
     } catch (error) {
-      console.error('Error updating comment: ', error);
-      setError('Error updating comment. Please try again later.');
+      console.error("Error updating comment: ", error);
+      setError("Error updating comment. Please try again later.");
     }
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setComments((prevComments) =>
-        prevComments.filter((comment) => comment.uuid !== commentId)
+        prevComments.filter((comment) => comment.uuid !== commentId),
       );
     } catch (error) {
-      console.error('Error deleting comment: ', error);
-      setError('Error deleting comment. Please try again later.');
+      console.error("Error deleting comment: ", error);
+      setError("Error deleting comment. Please try again later.");
     }
   };
 
@@ -119,35 +130,39 @@ function ShowBlog() {
 
   // Sanitize and render blog content
   const sanitizedHtml = DOMPurify.sanitize(blog.content, {
-    ADD_TAGS: ['style'],
-    ADD_ATTR: ['style'],
-    FORBID_ATTR: ['class'],
+    ADD_TAGS: ["style"],
+    ADD_ATTR: ["style"],
+    FORBID_ATTR: ["class"],
   });
 
   // Prism syntax highlighting component
   const CodeBlock = ({ language, value }) => {
     return (
-      <SyntaxHighlighter language={language} style={dark}>
+      <SyntaxHighlighter
+        showLineNumbers={true}
+        wrapLines
+        language={language}
+        style={docco}
+      >
         {value}
       </SyntaxHighlighter>
     );
   };
-
-  // Replace <pre><code> blocks with CodeBlock component
   const renderHtmlWithSyntaxHighlighting = (htmlContent) => {
-    const div = document.createElement('div');
-    div.innerHTML = htmlContent;
-    const codeBlocks = div.querySelectorAll('jsx python go c html ruby');
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = htmlContent;
+    const codeBlocks = wrapper.querySelectorAll("pre code");
     codeBlocks.forEach((codeBlock) => {
-      const language = codeBlock.className.replace('language-', '');
+      const language = codeBlock.className.replace("language", "");
       const code = codeBlock.textContent;
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = `<CodeBlock language="${language}" value="${code}" />`;
-      codeBlock.parentNode.replaceChild(wrapper.firstChild, codeBlock);
+      const parent = codeBlock.parentNode;
+      const codeBlockHtml = renderToStaticMarkup(
+        <CodeBlock language={language} value={code} />,
+      );
+      parent.innerHTML = codeBlockHtml;
     });
-    return div.innerHTML;
+    return wrapper.innerHTML;
   };
-
   return (
     <>
       <NavBar />
@@ -158,7 +173,7 @@ function ShowBlog() {
             <div className="mt-4">
               <p className="text-gray-600 mb-2">Tags: {blog.tags}</p>
               <p className="text-gray-600">
-                Links:{' '}
+                Links:{" "}
                 <a href={blog.links} className="text-blue-500 hover:underline">
                   {blog.links}
                 </a>
@@ -184,7 +199,10 @@ function ShowBlog() {
               <div className="flex mt-2">
                 <button
                   onClick={() => {
-                    const updatedContent = prompt('Enter updated content:', comment.content);
+                    const updatedContent = prompt(
+                      "Enter updated content:",
+                      comment.content,
+                    );
                     if (updatedContent) {
                       handleUpdateComment(comment.uuid, updatedContent);
                     }
@@ -195,7 +213,11 @@ function ShowBlog() {
                 </button>
                 <button
                   onClick={() => {
-                    if (window.confirm('Are you sure you want to delete this comment?')) {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this comment?",
+                      )
+                    ) {
                       handleDeleteComment(comment.uuid);
                     }
                   }}
@@ -234,4 +256,3 @@ function ShowBlog() {
 }
 
 export default ShowBlog;
-

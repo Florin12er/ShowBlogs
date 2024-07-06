@@ -21,6 +21,8 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.24.1",
     "react-syntax-highlighter": "^15.5.0",
+    "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
+    "react-virtualized": "^9.22.5",
     "refractor": "^4.8.1",
     "tailwind-highlightjs": "^2.0.1",
     "tinymce": "^7.2.1",
