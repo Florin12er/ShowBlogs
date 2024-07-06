@@ -12,10 +12,17 @@
   "dependencies": {
     "@tinymce/tinymce-react": "^5.1.1",
     "axios": "^1.7.2",
+    "dompurify": "^3.1.6",
     "jwt-decode": "^4.0.0",
+    "marked": "^13.0.2",
+    "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.24.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "refractor": "^4.8.1",
+    "tailwind-highlightjs": "^2.0.1",
     "tinymce": "^7.2.1",
     "uuid": "^10.0.0"
   },

@@ -37,29 +37,17 @@ function Login() {
     }
   };
 
-  const googleAuth = async (event) => {
-    event.preventDefault();
+  const handleGuestLogin = async () => {
     try {
-      const response = await axios.get(
-        "https://blogapi-production-fb2f.up.railway.app/user/auth/google",
-        { withCredentials: true },
+      const response = await axios.post(
+        "https://blogapi-production-fb2f.up.railway.app/user/guest"
       );
-      window.open(response.request.responseURL, "_blank"); // Open Google authentication in a new tab
+      const { token, userId } = response.data; // Assuming userId is returned from backend
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId); // Store userId in local storage
+      window.location.href = "/"; // Redirect to home/dashboard page after login
     } catch (error) {
-      setError("Failed to redirect to Google authentication");
-    }
-  };
-
-  const githubAuth = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.get(
-        "https://blogapi-production-fb2f.up.railway.app/user/auth/github",
-        { withCredentials: true },
-      );
-      window.open(response.request.responseURL, "_blank"); // Open GitHub authentication in a new tab
-    } catch (error) {
-      setError("Failed to redirect to GitHub authentication");
+      setError(error.response.data.message);
     }
   };
 
@@ -111,6 +99,13 @@ function Login() {
           >
             Login
           </button>
+          <button
+            type="button"
+            onClick={handleGuestLogin}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md focus:outline-none w-full mt-2"
+          >
+            Login as Guest
+          </button>
         </form>
         <div className="text-center mt-4">
         </div>
@@ -137,3 +132,4 @@ function Login() {
 }
 
 export default Login;
+

@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+        hljs: {
+      theme: 'night-owl', // Choose a theme or use a custom one
+    },
   },
   plugins: [],
 }
