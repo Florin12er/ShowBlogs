@@ -125,9 +125,9 @@ function Login() {
               <img
                 src={githubLogo}
                 alt="GitHub Logo"
-                className="w-24 h-10 mr-2"
+                className="w-18 h-8 mr-2"
               />
-              Login with GitHub
+              GitHub
             </button>
             <button
               type="button"
@@ -138,7 +138,7 @@ function Login() {
                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
                 className="w-18 h-8 mr-2"
               />
-              Log in with Google
+             Google
             </button>
           </div>
         </form>
