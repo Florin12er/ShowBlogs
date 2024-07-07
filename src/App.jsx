@@ -20,7 +20,7 @@ function App() {
     <>
       <ThemeProvider>
         <Routes>
-                    <Route path="/auth/github/callback/:token" element={<GithubCallback />} />
+          <Route path="/auth/github/callback" element={<GithubCallback />} />
           <Route
             path="/"
             element={
