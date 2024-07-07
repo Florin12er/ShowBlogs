@@ -25,7 +25,7 @@ function NavBar() {
 
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (err) {
       setError(err.response.data.message);
     }
