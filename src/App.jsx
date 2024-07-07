@@ -20,7 +20,6 @@ function App() {
     <>
       <ThemeProvider>
         <Routes>
-          <Route path="/auth/github/callback" element={<GithubCallback />} />
           <Route
             path="/"
             element={
@@ -61,10 +60,11 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="/auth/github/callback" element={<GithubCallback />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/reset-request" element={<ResetRequest />} />
           <Route path="/reset" element={<ResetPassword />} />
+          <Route path="/reset-request" element={<ResetRequest />} />
         </Routes>
       </ThemeProvider>
     </>
