@@ -18,7 +18,6 @@ import { ThemeProvider } from "./components/ThemeContext";
 function App() {
   return (
     <>
-      <ThemeProvider>
         <Routes>
           <Route
             path="/"
@@ -66,7 +65,6 @@ function App() {
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/auth/github" element={<GitHubCallback/>} /> {/* Add GitHubCallback route */}
         </Routes>
-      </ThemeProvider>
     </>
   );
 }
