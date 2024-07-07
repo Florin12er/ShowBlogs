@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
-function GitHubCallback() {
+function GithubCallback() {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -16,5 +16,5 @@ function GitHubCallback() {
     ); // GitHub callback component doesn't render anything
 }
 
-export default GitHubCallback;
+export default GithubCallback;
 

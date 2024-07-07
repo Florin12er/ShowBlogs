@@ -10,7 +10,7 @@ import Register from "./routes/Register";
 import ResetPassword from "./routes/Reset";
 import ResetRequest from "./routes/ResetRequest";
 import Settings from "./routes/Setting";
-import GitHubCallback from "./routes/GithubCallback";
+import GithubCallback from "./routes/GithubCallback";
 
 import YourBlogs from "./routes/YourBlogs";
 import Update from "./routes/Update";
@@ -20,7 +20,7 @@ function App() {
     <>
       <ThemeProvider>
         <Routes>
-          <Route path="/auth/github" element={<GitHubCallback />} />
+          <Route path="/auth/github" element={<GithubCallback />} />
           <Route
             path="/"
             element={
