@@ -64,7 +64,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-request" element={<ResetRequest />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="/auth/github/callback" element={<GitHubCallback/>} /> {/* Add GitHubCallback route */}
+          <Route path="/auth/github" element={<GitHubCallback/>} /> {/* Add GitHubCallback route */}
         </Routes>
       </ThemeProvider>
     </>
