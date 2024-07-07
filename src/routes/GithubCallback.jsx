@@ -1,6 +1,7 @@
 // GitHubCallback.js
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 function GitHubCallback() {
     const navigate = useNavigate();
@@ -8,7 +9,10 @@ function GitHubCallback() {
 
 
     return (
+        <>
+            <NavBar/>
         <h1>Hello</h1>
+        </>
     ); // GitHub callback component doesn't render anything
 }
 
