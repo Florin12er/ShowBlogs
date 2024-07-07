@@ -1,19 +1,27 @@
-// GitHubCallback.js
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 function GithubCallback() {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const location = useLocation();
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
 
-    return (
-        <>
-            <NavBar/>
-        <h1>Hello</h1>
-        </>
-    ); // GitHub callback component doesn't render anything
+    if (token) {
+      localStorage.setItem("token", token);
+      // Redirect to the desired route after authentication
+      window.location.href = "/"; // Replace with your desired route
+    }
+  }, [location]);
+
+  return (
+    <>
+      <NavBar />
+      <h1>Hello</h1>
+    </>
+  );
 }
 
 export default GithubCallback;
