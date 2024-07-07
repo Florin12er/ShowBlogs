@@ -25,11 +25,12 @@ function Login() {
       const response = await axios.post(
         "https://blogapi-production-fb2f.up.railway.app/user/login",
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
-      const { token, userId } = response.data;
+      const { token, userId, username } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
+      localStorage.setItem("username", username);
       window.location.href = "/";
     } catch (error) {
       setError(error.response.data.message);
@@ -39,7 +40,7 @@ function Login() {
   const handleGuestLogin = async () => {
     try {
       const response = await axios.post(
-        "https://blogapi-production-fb2f.up.railway.app/user/guest"
+        "https://blogapi-production-fb2f.up.railway.app/user/guest",
       );
       const { token, userId } = response.data;
       localStorage.setItem("token", token);
@@ -51,7 +52,12 @@ function Login() {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = "https://blogapi-production-fb2f.up.railway.app/auth/github";
+    window.location.href =
+      "https://blogapi-production-fb2f.up.railway.app/auth/github";
+  };
+  const handleGoogleLogin = () => {
+    window.location.href =
+      "https://blogapi-production-fb2f.up.railway.app/auth/google";
   };
 
   return (
@@ -109,14 +115,32 @@ function Login() {
           >
             Login as Guest
           </button>
-          <button
-            type="button"
-            onClick={handleGitHubLogin}
-            className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md focus:outline-none w-full mt-2 flex items-center justify-center"
-          >
-            <img src={githubLogo} alt="GitHub Logo" className="w-6 h-6 mr-2" />
-            Login with GitHub
-          </button>
+                    <h3 className="text-xl mt-8">Or login with:</h3>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleGitHubLogin}
+              className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md focus:outline-none w-full mt-2 flex items-center justify-center"
+            >
+              <img
+                src={githubLogo}
+                alt="GitHub Logo"
+                className="w-24 h-10 mr-2"
+              />
+              Login with GitHub
+            </button>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="bg-red-600 hover:bg-red-700 text-black py-2 px-4 rounded-md focus:outline-none w-full mt-2 flex items-center justify-center"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
+                className="w-24 h-10 mr-2"
+              />
+              Log in with Google
+            </button>
+          </div>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
@@ -141,4 +165,3 @@ function Login() {
 }
 
 export default Login;
-

@@ -15,6 +15,7 @@ import GithubCallback from "./routes/GithubCallback";
 import YourBlogs from "./routes/YourBlogs";
 import Update from "./routes/Update";
 import { ThemeProvider } from "./components/ThemeContext";
+import GoogleCallback from "./routes/GoogleCallback";
 function App() {
   return (
     <>
@@ -61,6 +62,7 @@ function App() {
             }
           />
           <Route path="/auth/github/callback" element={<GithubCallback />} />
+          <Route path="/auth/google/callback" element={<GoogleCallback/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset" element={<ResetPassword />} />
