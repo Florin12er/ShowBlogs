@@ -19,7 +19,7 @@ function GithubCallback() {
   return (
     <>
       <NavBar />
-      <h1>Hello</h1>
+      <h1>Hella</h1>
     </>
   );
 }
