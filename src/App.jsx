@@ -18,7 +18,9 @@ import { ThemeProvider } from "./components/ThemeContext";
 function App() {
   return (
     <>
+      <ThemeProvider>
         <Routes>
+          <Route path="/auth/github" element={<GitHubCallback />} />
           <Route
             path="/"
             element={
@@ -63,11 +65,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-request" element={<ResetRequest />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="/auth/github" element={<GitHubCallback/>} /> {/* Add GitHubCallback route */}
         </Routes>
+      </ThemeProvider>
     </>
   );
 }
 
 export default App;
-
