@@ -1,21 +1,26 @@
+// GitHubCallback.js
+
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 
 function GitHubCallback() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+
+    // Store token in local storage or state
     if (token) {
       localStorage.setItem("token", token);
-      navigate("/"); // Redirect to your dashboard or home page
-    } else {
-      navigate("/login"); // Redirect to login page if no token is found
     }
-  }, [navigate, searchParams]);
 
-  return <div>Loading...</div>;
+    // Redirect to desired route after successful authentication
+    navigate("/"); // Replace with your desired route
+  }, [location, navigate]);
+
+  return null; // GitHub callback component doesn't render anything
 }
 
 export default GitHubCallback;
