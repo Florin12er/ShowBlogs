@@ -1,7 +1,7 @@
 // GitHubCallback.js
 
 import { useEffect } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function GitHubCallback() {
   const location = useLocation();
@@ -24,4 +24,3 @@ function GitHubCallback() {
 }
 
 export default GitHubCallback;
-
