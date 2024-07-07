@@ -18,7 +18,9 @@ function GitHubCallback() {
     navigate("/"); // Replace with your desired route after successful GitHub authentication
   }, [location, navigate]);
 
-  return null; // GitHub callback component doesn't render anything
+  return (
+  <h1>Hello</h1>
+  ); // GitHub callback component doesn't render anything
 }
 
 export default GitHubCallback;

@@ -10,11 +10,11 @@ import Register from "./routes/Register";
 import ResetPassword from "./routes/Reset";
 import ResetRequest from "./routes/ResetRequest";
 import Settings from "./routes/Setting";
+import GitHubCallback from "./routes/GithubCallback";
+
 import YourBlogs from "./routes/YourBlogs";
 import Update from "./routes/Update";
-import GitHubCallback from "./components/GithubCallback"; // Import GitHubCallback component
 import { ThemeProvider } from "./components/ThemeContext";
-
 function App() {
   return (
     <>
@@ -64,7 +64,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-request" element={<ResetRequest />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="/auth/github/callback" element={<GitHubCallback />} /> {/* Add GitHubCallback route */}
+          <Route path="/auth/github/callback" element={<GitHubCallback/>} /> {/* Add GitHubCallback route */}
         </Routes>
       </ThemeProvider>
     </>
