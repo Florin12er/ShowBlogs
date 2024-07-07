@@ -120,7 +120,7 @@ function Login() {
             <button
               type="button"
               onClick={handleGitHubLogin}
-              className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md focus:outline-none w-full mt-2 flex items-center justify-center"
+              className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md focus:outline-none w-full mt-4 flex items-center justify-center"
             >
               <img
                 src={githubLogo}
@@ -132,11 +132,11 @@ function Login() {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="bg-red-600 hover:bg-red-700 text-black py-2 px-4 rounded-md focus:outline-none w-full mt-2 flex items-center justify-center"
+              className="bg-red-600 hover:bg-red-700 text-black py-2 px-2 rounded-md focus:outline-none w-full mt-4 flex items-center justify-center"
             >
               <img
                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
-                className="w-24 h-10 mr-2"
+                className="w-18 h-8 mr-2"
               />
               Log in with Google
             </button>
