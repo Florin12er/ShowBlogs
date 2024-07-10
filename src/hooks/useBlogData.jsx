@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 function truncateHTMLContent(html, maxLength) {
   const plainText =
     new DOMParser().parseFromString(html, "text/html").body.textContent || "";
@@ -7,7 +7,6 @@ function truncateHTMLContent(html, maxLength) {
     ? plainText.substring(0, maxLength) + "..."
     : plainText;
 }
-
 function useBlogData() {
   const [data, setData] = useState([]);
 
@@ -20,8 +19,9 @@ function useBlogData() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
-          }
+          },
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -36,16 +36,18 @@ function useBlogData() {
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "x-api-key": apiKey,
                 },
-              }
+              },
             );
             const dislikeResponse = await fetch(
               `https://blogapi-production-fb2f.up.railway.app/user/blog/${item._id}/dislikes/count`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "x-api-key": apiKey,
                 },
-              }
+              },
             );
             if (likeResponse.ok && dislikeResponse.ok) {
               const likeData = await likeResponse.json();
@@ -55,7 +57,7 @@ function useBlogData() {
             } else {
               throw new Error("Error fetching like/dislike counts");
             }
-          })
+          }),
         );
 
         setData(jsonData); // Update state with likes and dislikes
@@ -71,4 +73,3 @@ function useBlogData() {
 }
 
 export { useBlogData, truncateHTMLContent };
-
