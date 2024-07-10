@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
-
 function Update() {
   const username = localStorage.getItem("username");
   const [editorContent, setEditorContent] = useState("");
@@ -11,8 +10,8 @@ function Update() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const apiKey = import.meta.env.VITE_TINYMCE_API_KEY; // Assuming this is correctly set up
-
+  const TinyMceapiKey = import.meta.env.VITE_TINYMCE_API_KEY; // Assuming this is correctly set up
+  const apiKey = import.meta.env.VITE_APP_API_KEY;
   const handleEditorChange = (content, editor) => {
     setEditorContent(content);
   };
@@ -53,6 +52,7 @@ function Update() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
         },
       );
@@ -121,7 +121,7 @@ function Update() {
               Content:
             </label>
             <Editor
-              apiKey={apiKey}
+              apiKey={TinyMceapiKey}
               initialValue=""
               init={{
                 height: 900,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { useParams } from "react-router-dom";
 
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 function Settings() {
   const { id } = useParams();
   const [user, setUser] = useState(null);
@@ -22,6 +23,7 @@ function Settings() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
           },
         );
@@ -59,6 +61,7 @@ function Settings() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
           body: JSON.stringify(formData),
         },

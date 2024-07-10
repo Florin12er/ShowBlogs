@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import image from "../../public/icon.jpg"; // Adjust the path based on your project structure
 import NavBar from "../components/NavBar";
-
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 function truncateHTMLContent(html, maxLength) {
   const plainText =
     new DOMParser().parseFromString(html, "text/html").body.textContent || "";
@@ -24,6 +24,7 @@ function ShowAllUsers() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
           },
         );

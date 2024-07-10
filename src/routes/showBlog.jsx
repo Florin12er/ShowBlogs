@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { renderToStaticMarkup } from "react-dom/server";
 import DOMPurify from "dompurify";
@@ -13,6 +13,7 @@ import * as styles from "react-syntax-highlighter/dist/esm/styles/hljs";
 SyntaxHighlighter.registerLanguage("javascript", js);
 SyntaxHighlighter.registerLanguage("ruby", ruby);
 
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 function ShowBlog() {
   const { id } = useParams();
   const { theme } = useContext(ThemeContext); // Get theme from ThemeContext
@@ -32,6 +33,7 @@ function ShowBlog() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
           },
         );
@@ -72,6 +74,7 @@ function ShowBlog() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
         },
       );
@@ -96,6 +99,7 @@ function ShowBlog() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
         },
       );
@@ -120,6 +124,7 @@ function ShowBlog() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
         },
       );
@@ -201,9 +206,7 @@ function ShowBlog() {
                 </a>
               </p>
               <div className="mt-8">
-                <h2 className="font-bold mb-4">
-                                    Select Code theme:
-                </h2>
+                <h2 className="font-bold mb-4">Select Code theme:</h2>
                 <select
                   onChange={handleStyleChange}
                   value={Object.keys(styles).find(
@@ -226,7 +229,7 @@ function ShowBlog() {
             </div>
           </header>
           <div className="p-14">
-                        <h1>content</h1>
+            <h1>content</h1>
             <div
               className="max-w-3xl prose"
               dangerouslySetInnerHTML={{

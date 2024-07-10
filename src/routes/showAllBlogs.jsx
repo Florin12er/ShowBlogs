@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { useBlogData} from "../hooks/useBlogData";
+import { useBlogData } from "../hooks/useBlogData";
 import BlogCard from "../components/BlogCard";
-
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 function ShowAllBlogs() {
   const [data, setData] = useState([]); // State for storing blog data
   const blogData = useBlogData(); // Custom hook to fetch blog data
@@ -21,8 +21,9 @@ function ShowAllBlogs() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -36,8 +37,8 @@ function ShowAllBlogs() {
                 likes: item.likes + 1,
                 dislikes: item.dislikes > 0 ? item.dislikes - 1 : item.dislikes,
               }
-            : item
-        )
+            : item,
+        ),
       );
     } catch (error) {
       console.error("Error liking blog: ", error);
@@ -53,8 +54,9 @@ function ShowAllBlogs() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -64,8 +66,8 @@ function ShowAllBlogs() {
         prevData.map((item) =>
           item._id === id
             ? { ...item, likes: item.likes > 0 ? item.likes - 1 : item.likes }
-            : item
-        )
+            : item,
+        ),
       );
     } catch (error) {
       console.error("Error unliking blog: ", error);
@@ -81,8 +83,9 @@ function ShowAllBlogs() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -96,8 +99,8 @@ function ShowAllBlogs() {
                 dislikes: item.dislikes + 1,
                 likes: item.likes > 0 ? item.likes - 1 : item.likes,
               }
-            : item
-        )
+            : item,
+        ),
       );
     } catch (error) {
       console.error("Error disliking blog: ", error);
@@ -113,8 +116,9 @@ function ShowAllBlogs() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -127,8 +131,8 @@ function ShowAllBlogs() {
                 ...item,
                 dislikes: item.dislikes > 0 ? item.dislikes - 1 : item.dislikes,
               }
-            : item
-        )
+            : item,
+        ),
       );
     } catch (error) {
       console.error("Error undisliking blog: ", error);
@@ -164,4 +168,3 @@ function ShowAllBlogs() {
 }
 
 export default ShowAllBlogs;
-

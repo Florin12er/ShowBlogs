@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import image from "../../public/icon.jpg";
 import NavBar from "../components/NavBar";
+
+const apiKey = import.meta.env.VITE_APP_API_KEY;
 
 function truncateHTMLContent(html, maxLength) {
   const plainText =
@@ -29,6 +31,7 @@ function ShowUser() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
           },
         );
@@ -44,6 +47,7 @@ function ShowUser() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": apiKey,
             },
           },
         );
@@ -69,7 +73,6 @@ function ShowUser() {
       setClickedUserId(null); // Reset after 2 seconds
     }, 2000);
   };
-
 
   return (
     <>
