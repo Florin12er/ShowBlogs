@@ -24,7 +24,7 @@ function BlogCard({ blog, onLike, onUnlike, onDislike, onUndislike }) {
         to={`/blog/${blog._id}`}
         className="text-blue-500 hover:underline mt-4 block"
       >
-        Read More
+        Read More →
       </Link>
 
       <div className="flex justify-end items-center mt-4">

@@ -2,93 +2,129 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import image from "../../public/icon.jpg"; // Adjust the path based on your project structure
 import NavBar from "../components/NavBar";
+
 const apiKey = import.meta.env.VITE_APP_API_KEY;
-function truncateHTMLContent(html, maxLength) {
-  const plainText =
-    new DOMParser().parseFromString(html, "text/html").body.textContent || "";
-  return plainText.length > maxLength
-    ? plainText.substring(0, maxLength) + "..."
-    : plainText;
-}
 
 function ShowAllUsers() {
   const [users, setUsers] = useState([]);
-  const [clickedUserId, setClickedUserId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          "https://blogapi-production-fb2f.up.railway.app/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "x-api-key": apiKey,
-            },
+    fetchUsers(currentPage);
+  }, [currentPage]);
+
+  async function fetchUsers(page) {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://blogapi-production-fb2f.up.railway.app/user?page=${page}&limit=9`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "x-api-key": apiKey,
           },
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
         }
-        const jsonData = await response.json();
-        setUsers(jsonData); // Assuming API returns an array directly
-      } catch (error) {
-        console.error("Error fetching users: ", error);
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      const data = await response.json();
+      setUsers(data.users);
+      setTotalPages(data.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+      setError(error.message);
+      setLoading(false);
     }
+  }
 
-    fetchUsers();
-  }, []);
-
-  const handleShare = (userId) => {
-    // Logic to handle sharing the user profile
-    console.log(`Sharing profile of user with ID: ${userId}`);
-    // Add your share functionality here (e.g., making an API call to share the profile)
-    setClickedUserId(userId); // Set the state to trigger animation
-    setTimeout(() => {
-      setClickedUserId(null); // Reset after 2 seconds
-    }, 2000);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Error:</strong>
+          <span className="block sm:inline"> {error}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <NavBar />
       <div className="bg-gray-100 min-h-screen py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center mb-8">User</h1>
+          <h1 className="text-4xl font-bold text-center mb-8">All Users</h1>
           {users && users.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {users.map((user) => (
-                <div
-                  key={user._id} // Adjust accordingly if the API uses a different ID field
-                  className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center"
-                >
-                  <img
-                    src={user.image || image} // Use imported image as fallback
-                    alt="User's profile"
-                    className="h-24 w-24 rounded-full mb-4 object-cover"
-                  />
-                  <h2 className="text-2xl font-bold mb-2">{user.username}</h2>
-                  <div className="flex gap-4">
-                    <Link
-                      to={`/user/${user._id}`}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                    >
-                      View Profile
-                    </Link>
-                    <button
-                      onClick={() => handleShare(user._id)}
-                      className={`bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ${
-                        clickedUserId === user._id ? "rainbow-animation" : ""
-                      }`}
-                    >
-                      Share
-                    </button>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {users.map((user) => (
+                  <div
+                    key={user._id}
+                    className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center"
+                  >
+                    <img
+                      src={user.profilePicture || image}
+                      alt="User's profile"
+                      className="h-24 w-24 rounded-full mb-4 object-cover"
+                    />
+                    <h2 className="text-2xl font-bold mb-2">{user.username}</h2>
+                    <div className="flex gap-4">
+                      <Link
+                        to={`/user/${user._id}`}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                      >
+                        View Profile
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+              <div className="mt-8 flex justify-center items-center space-x-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()].map((page) => (
+                  <button
+                    key={page + 1}
+                    onClick={() => handlePageChange(page + 1)}
+                    className={`px-4 py-2 rounded ${
+                      currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                    }`}
+                  >
+                    {page + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  Next
+                </button>
+              </div>
+            </>
           ) : (
             <p className="text-center text-gray-500">No users available</p>
           )}
@@ -99,3 +135,4 @@ function ShowAllUsers() {
 }
 
 export default ShowAllUsers;
+
