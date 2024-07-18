@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import { renderToStaticMarkup } from "react-dom/server";
 import DOMPurify from "dompurify";
@@ -7,24 +7,27 @@ import axios from "axios";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
 import ruby from "react-syntax-highlighter/dist/esm/languages/hljs/ruby";
-import { ThemeContext } from "../components/ThemeContext"; // Import ThemeContext
 import * as styles from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 SyntaxHighlighter.registerLanguage("javascript", js);
 SyntaxHighlighter.registerLanguage("ruby", ruby);
 
 const apiKey = import.meta.env.VITE_APP_API_KEY;
+
 function ShowBlog() {
   const { id } = useParams();
-  const { theme } = useContext(ThemeContext); // Get theme from ThemeContext
   const [blog, setBlog] = useState(null);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
   const [selectedStyle, setSelectedStyle] = useState(styles.docco); // Default style
   const [availableStyles, setAvailableStyles] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setCurrentUserId(userId);
+
     async function fetchBlog() {
       try {
         const token = localStorage.getItem("token");
@@ -82,7 +85,7 @@ function ShowBlog() {
         ...response.data.comment,
         uuid: response.data.comment._id,
       };
-      setComments([...comments, newComment]);
+      setComments((prevComments) => [...prevComments, newComment]);
       setCommentContent("");
     } catch (error) {
       console.error("Error adding comment: ", error);
@@ -93,7 +96,7 @@ function ShowBlog() {
   const handleUpdateComment = async (commentId, updatedContent) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put(
+      await axios.put(
         `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`,
         { content: updatedContent },
         {
@@ -149,18 +152,16 @@ function ShowBlog() {
   });
 
   // Prism syntax highlighting component
-  const CodeBlock = ({ language, value }) => {
-    return (
-      <SyntaxHighlighter
-        showLineNumbers={true}
-        wrapLines
-        language={language}
-        style={selectedStyle} // Use selected style here
-      >
-        {value}
-      </SyntaxHighlighter>
-    );
-  };
+  const CodeBlock = ({ language, value }) => (
+    <SyntaxHighlighter
+      showLineNumbers={true}
+      wrapLines
+      language={language}
+      style={selectedStyle} // Use selected style here
+    >
+      {value}
+    </SyntaxHighlighter>
+  );
 
   const renderHtmlWithSyntaxHighlighting = (htmlContent) => {
     const wrapper = document.createElement("div");
@@ -184,16 +185,10 @@ function ShowBlog() {
     setSelectedStyle(styles[styleName]);
   };
 
-  // Apply theme-specific styles
-  const themeStyles = {
-    backgroundColor: theme === "dark" ? "#1a202c" : "#ffffff",
-    color: theme === "dark" ? "#ffffff" : "#1a202c",
-  };
-
   return (
-    <div style={themeStyles}>
+    <div className="text-black">
       <NavBar /> {/* Ensure NavBar also applies selected theme */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <article className="bg-white rounded-lg shadow-lg">
           <header className="p-6 bg-gray-100 rounded-t-lg">
             <h1 className="text-4xl font-bold text-center">{blog.title}</h1>
@@ -231,7 +226,7 @@ function ShowBlog() {
           <div className="p-14">
             <h1>content</h1>
             <div
-              className="max-w-3xl prose"
+              className="max-w-5xl prose"
               dangerouslySetInnerHTML={{
                 __html: renderHtmlWithSyntaxHighlighting(sanitizedHtml),
               }}
@@ -241,42 +236,44 @@ function ShowBlog() {
 
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">Comments</h2>
-          {comments.length === 0 && <p>No comments yet.</p>}
-          {comments.map((comment) => (
-            <div key={comment.uuid} className="bg-gray-100 p-4 rounded-lg mb-4">
-              <p className="text-gray-800">{comment.content}</p>
-              <div className="flex mt-2">
-                <button
-                  onClick={() => {
-                    const updatedContent = prompt(
-                      "Enter updated content:",
-                      comment.content,
-                    );
-                    if (updatedContent) {
-                      handleUpdateComment(comment.uuid, updatedContent);
-                    }
-                  }}
-                  className="text-sm text-blue-500 hover:text-blue-700 focus:outline-none mr-2"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        "Are you sure you want to delete this comment?",
-                      )
-                    ) {
-                      handleDeleteComment(comment.uuid);
-                    }
-                  }}
-                  className="text-sm text-red-500 hover:text-red-700 focus:outline-none"
-                >
-                  Delete
-                </button>
+          {comments.length === 0 ? (
+            <p>No comments yet.</p>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment.uuid} className="mb-4">
+                <p>{comment.content}</p>
+                <p className="text-sm text-gray-500">
+                  By: {comment.user ? comment.user.username : "Unknown"}
+                </p>
+                {currentUserId &&
+                  comment.user &&
+                  currentUserId === comment.user._id && (
+                    <>
+                      <button
+                        onClick={() => {
+                          const updatedContent = prompt(
+                            "Enter updated comment:",
+                            comment.content,
+                          );
+                          if (updatedContent) {
+                            handleUpdateComment(comment.uuid, updatedContent); // Ensure id is uuid
+                          }
+                        }}
+                        className="text-blue-500 mr-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteComment(comment.uuid)} // Ensure id is uuid
+                        className="text-red-500"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="mt-8">

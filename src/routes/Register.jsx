@@ -7,13 +7,32 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("token");
 
   if (token) {
     return <Navigate to="/" replace />;
   }
+
+  const validateForm = () => {
+    if (!username || !email || !password) {
+      setError("All fields are required");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null);
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://blogapi-production-fb2f.up.railway.app/user/register",
@@ -21,19 +40,19 @@ function Register() {
           username,
           email,
           password,
-        },
+        }
       );
       if (response.data) {
         window.location.href = "/login";
-      } else {
-        setError("Registration failed. Please try again.");
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message); // Display backend-specific error message
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
       } else {
-        setError("Registration failed. Please try again later."); // Generic error message
+        setError("Registration failed. Please try again later.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,12 +73,12 @@ function Register() {
               id="username"
               name="username"
               value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500"
               placeholder="Enter your username"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label
               htmlFor="email"
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -71,7 +90,7 @@ function Register() {
               id="email"
               name="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
             />
@@ -88,17 +107,18 @@ function Register() {
               id="password"
               name="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500"
               placeholder="Enter your password"
             />
           </div>
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 mb-4">{error}</p>}
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none w-full"
+            disabled={isLoading}
           >
-            Register
+            {isLoading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="text-sm text-gray-600 mt-4">
@@ -113,3 +133,4 @@ function Register() {
 }
 
 export default Register;
+

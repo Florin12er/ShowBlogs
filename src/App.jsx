@@ -14,12 +14,10 @@ import GithubCallback from "./routes/GithubCallback";
 
 import YourBlogs from "./routes/YourBlogs";
 import Update from "./routes/Update";
-import { ThemeProvider } from "./components/ThemeContext";
 import GoogleCallback from "./routes/GoogleCallback";
 function App() {
   return (
     <>
-      <ThemeProvider>
         <Routes>
           <Route
             path="/"
@@ -68,7 +66,6 @@ function App() {
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/reset-request" element={<ResetRequest />} />
         </Routes>
-      </ThemeProvider>
     </>
   );
 }
