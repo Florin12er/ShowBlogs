@@ -12,6 +12,7 @@ function truncateHTMLContent(html, maxLength) {
 }
 
 function ShowUser() {
+  const API_URL = "https://blogapi-production-fb2f.up.railway.app";
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ function ShowUser() {
               Authorization: `Bearer ${token}`,
               "x-api-key": apiKey,
             },
-          }
+          },
         );
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
@@ -55,7 +56,7 @@ function ShowUser() {
             Authorization: `Bearer ${token}`,
             "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!blogsResponse.ok) {
         throw new Error("Failed to fetch user's blogs");
@@ -70,7 +71,7 @@ function ShowUser() {
       setPagination({
         currentPage: blogsData.currentPage,
         totalPages: blogsData.totalPages,
-        totalBlogs: blogsData.totalBlogs
+        totalBlogs: blogsData.totalBlogs,
       });
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -95,7 +96,10 @@ function ShowUser() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
           <strong className="font-bold">Error:</strong>
           <span className="block sm:inline"> {error}</span>
         </div>
@@ -111,16 +115,24 @@ function ShowUser() {
           {user && (
             <>
               <div className="mb-8">
-                <h1 className="text-4xl font-bold text-center mb-6">User Profile</h1>
+                <h1 className="text-4xl font-bold text-center mb-6">
+                  User Profile
+                </h1>
                 <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
                   <div className="flex items-center">
                     <img
-                      src={user.profilePicture || image}
+                      src={
+                        user.profilePicture
+                          ? `${API_URL}/uploads/${user.profilePicture}`
+                          : image
+                      }
                       alt="User Profile"
                       className="h-24 w-24 rounded-full mr-4 object-cover"
                     />
                     <div>
-                      <h2 className="text-2xl font-bold mb-2">{user.username}</h2>
+                      <h2 className="text-2xl font-bold mb-2">
+                        {user.username}
+                      </h2>
                       <p className="text-gray-600 mb-2">{user.email}</p>
                     </div>
                   </div>
@@ -130,7 +142,9 @@ function ShowUser() {
               <div>
                 <h2 className="text-3xl font-bold mb-6">User's Blogs</h2>
                 {blogs.length === 0 ? (
-                  <p className="text-center text-gray-600 text-lg">This user hasn't posted any blogs yet.</p>
+                  <p className="text-center text-gray-600 text-lg">
+                    This user hasn't posted any blogs yet.
+                  </p>
                 ) : (
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -139,7 +153,9 @@ function ShowUser() {
                           key={blog._id}
                           className="bg-white p-6 rounded-lg shadow-lg transition duration-300 hover:shadow-xl"
                         >
-                          <h3 className="text-xl font-bold mb-3">{blog.title}</h3>
+                          <h3 className="text-xl font-bold mb-3">
+                            {blog.title}
+                          </h3>
                           <p className="mb-2">
                             <span className="font-semibold">Links:</span>{" "}
                             <a
@@ -152,7 +168,8 @@ function ShowUser() {
                             </a>
                           </p>
                           <p className="text-gray-600 mb-3">
-                            <span className="font-semibold">Tags:</span> {blog.tags}
+                            <span className="font-semibold">Tags:</span>{" "}
+                            {blog.tags}
                           </p>
                           <p className="text-gray-700 mb-4">
                             {truncateHTMLContent(blog.content, 150)}
@@ -179,7 +196,9 @@ function ShowUser() {
                           key={page + 1}
                           onClick={() => handlePageChange(page + 1)}
                           className={`px-4 py-2 rounded ${
-                            currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                            currentPage === page + 1
+                              ? "bg-blue-500 text-white"
+                              : "bg-gray-200"
                           }`}
                         >
                           {page + 1}
@@ -194,7 +213,9 @@ function ShowUser() {
                       </button>
                     </div>
                     <div className="mt-4 text-center">
-                      <p>Page {pagination.currentPage} of {pagination.totalPages}</p>
+                      <p>
+                        Page {pagination.currentPage} of {pagination.totalPages}
+                      </p>
                       <p>Total Blogs: {pagination.totalBlogs}</p>
                     </div>
                   </>
@@ -209,4 +230,3 @@ function ShowUser() {
 }
 
 export default ShowUser;
-

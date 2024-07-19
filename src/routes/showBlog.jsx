@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { renderToStaticMarkup } from "react-dom/server";
 import DOMPurify from "dompurify";
@@ -6,10 +6,12 @@ import NavBar from "../components/NavBar";
 import axios from "axios";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
+import python from "react-syntax-highlighter/dist/esm/languages/hljs/python"
 import ruby from "react-syntax-highlighter/dist/esm/languages/hljs/ruby";
 import * as styles from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 SyntaxHighlighter.registerLanguage("javascript", js);
+SyntaxHighlighter.registerLanguage("python", python);
 SyntaxHighlighter.registerLanguage("ruby", ruby);
 
 const apiKey = import.meta.env.VITE_APP_API_KEY;
@@ -191,15 +193,45 @@ function ShowBlog() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <article className="bg-white rounded-lg shadow-lg">
           <header className="p-6 bg-gray-100 rounded-t-lg">
-            <h1 className="text-4xl font-bold text-center">{blog.title}</h1>
+            <div className="flex justify-center">
+              {blog.thumbnail && (
+                <img
+                  src={`https://blogapi-production-fb2f.up.railway.app${blog.thumbnail}`}
+                  alt={blog.title}
+                  className="w-96 h-64 object-cover"
+                />
+              )}
+            </div>
+            <h1 className="text-4xl font-bold mb-10">{blog.title}</h1>
+            <h2 className="text-3xl font-bold mb-4">Author:</h2>
+            <div className="flex items-center mb-6">
+              <img
+                src={`https://ui-avatars.com/api/?name=${blog.author}&background=random`}
+                alt={blog.author}
+                className="w-10 h-10 rounded-full mr-4"
+              />
+              <p className="text-gray-800 font-semibold">{blog.author}</p>
+            </div>
             <div className="mt-4">
-              <p className="text-gray-600 mb-2">Tags: {blog.tags}</p>
-              <p className="text-gray-600">
-                Links:{" "}
-                <a href={blog.links} className="text-blue-500 hover:underline">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Tags:</h2>
+                <div className="flex flex-wrap gap-2">
+                  {blog.tags.split(",").map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
+                    >
+                      {tag.trim()}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Links:</h2>
+                <a href={blog.links} className="text-blue-600 hover:underline">
                   {blog.links}
                 </a>
-              </p>
+              </div>
               <div className="mt-8">
                 <h2 className="font-bold mb-4">Select Code theme:</h2>
                 <select

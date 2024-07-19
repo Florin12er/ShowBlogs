@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import image from "../../public/icon.jpg"; // Adjust the path based on your project structure
+import defaultImage from "../../public/icon.jpg"; // Adjust the path based on your project structure
 import NavBar from "../components/NavBar";
 
 const apiKey = import.meta.env.VITE_APP_API_KEY;
+const API_URL = "https://blogapi-production-fb2f.up.railway.app"; // Add this line
 
 function ShowAllUsers() {
   const [users, setUsers] = useState([]);
@@ -21,13 +22,13 @@ function ShowAllUsers() {
       setLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://blogapi-production-fb2f.up.railway.app/user?page=${page}&limit=9`,
+        `${API_URL}/user?page=${page}&limit=9`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "x-api-key": apiKey,
           },
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -58,7 +59,10 @@ function ShowAllUsers() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
           <strong className="font-bold">Error:</strong>
           <span className="block sm:inline"> {error}</span>
         </div>
@@ -81,9 +85,13 @@ function ShowAllUsers() {
                     className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center"
                   >
                     <img
-                      src={user.profilePicture || image}
-                      alt="User's profile"
+                      src={user.profilePicture ? `${API_URL}/uploads/${user.profilePicture}` : defaultImage}
+                      alt={`${user.username}'s profile`}
                       className="h-24 w-24 rounded-full mb-4 object-cover"
+                      onError={(e) => {
+                        e.target.onerror = null; // Prevent infinite loop
+                        e.target.src = defaultImage;
+                      }}
                     />
                     <h2 className="text-2xl font-bold mb-2">{user.username}</h2>
                     <div className="flex gap-4">
@@ -110,7 +118,9 @@ function ShowAllUsers() {
                     key={page + 1}
                     onClick={() => handlePageChange(page + 1)}
                     className={`px-4 py-2 rounded ${
-                      currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                      currentPage === page + 1
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
                     }`}
                   >
                     {page + 1}
