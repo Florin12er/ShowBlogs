@@ -130,30 +130,36 @@ function ShowAllBlogs() {
       console.error(`Error ${action} blog: `, error);
     }
   };
-
   return (
     <>
       <NavBar />
-      <div className="bg-gray-100 min-h-screen py-8">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center mb-8">All Blogs</h1>
-          <div className="mb-8">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={handleSearchInputChange}
-              placeholder="Search blogs..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+      <div className="bg-gradient-to-b from-blue-100 to-white min-h-screen py-12">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <h1 className="text-5xl font-extrabold text-center mb-12 text-blue-800">
+            Explore Blogs
+          </h1>
+          <div className="mb-8 max-w-2xl mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                placeholder="Search blogs..."
+                className="w-full px-6 py-3 border-2 border-blue-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              />
+              <svg className="absolute right-4 top-3 h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
           {loading ? (
             <div className="flex justify-center items-center">
-              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+              <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-blue-500"></div>
             </div>
           ) : error ? (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <strong className="font-bold">Error:</strong>
-              <span className="block sm:inline"> {error}</span>
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-md" role="alert">
+              <p className="font-bold">Error</p>
+              <p>{error}</p>
             </div>
           ) : blogs && blogs.length > 0 ? (
             <>
@@ -169,11 +175,11 @@ function ShowAllBlogs() {
                   />
                 ))}
               </div>
-              <div className="mt-8 flex justify-center items-center space-x-2">
+              <div className="mt-12 flex justify-center items-center space-x-2">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 hover:bg-blue-600 transition duration-300 ease-in-out"
                 >
                   Previous
                 </button>
@@ -181,8 +187,10 @@ function ShowAllBlogs() {
                   <button
                     key={page + 1}
                     onClick={() => handlePageChange(page + 1)}
-                    className={`px-4 py-2 rounded ${
-                      currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                    className={`px-4 py-2 rounded-md transition duration-300 ease-in-out ${
+                      currentPage === page + 1 
+                        ? 'bg-blue-500 text-white' 
+                        : 'bg-gray-200 hover:bg-gray-300'
                     }`}
                   >
                     {page + 1}
@@ -191,14 +199,20 @@ function ShowAllBlogs() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 hover:bg-blue-600 transition duration-300 ease-in-out"
                 >
                   Next
                 </button>
               </div>
             </>
           ) : (
-            <p className="text-center text-gray-500">No blogs available</p>
+            <div className="text-center text-gray-600 bg-white p-8 rounded-lg shadow-md">
+              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="mt-4 text-xl">No blogs available</p>
+              <p className="mt-2">Be the first to create a blog!</p>
+            </div>
           )}
         </div>
       </div>

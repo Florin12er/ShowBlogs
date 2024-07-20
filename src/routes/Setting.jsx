@@ -127,10 +127,10 @@ function Settings() {
   };
 
   return (
-    <>
+    <div>
       <NavBar />
       <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">User Settings</h1>
+        <h1 className="text-5xl font-extrabold text-center mb-12 text-blue-800">User Settings</h1>
         {user ? (
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="md:flex">
@@ -201,7 +201,7 @@ function Settings() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

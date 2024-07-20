@@ -73,9 +73,9 @@ function ShowAllUsers() {
   return (
     <>
       <NavBar />
-      <div className="bg-gray-100 min-h-screen py-8">
+      <div className="bg-gradient-to-b from-blue-100 min-h-screen py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center mb-8">All Users</h1>
+          <h1 className="text-5xl font-extrabold text-center mb-12 text-blue-800">All Users</h1>
           {users && users.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

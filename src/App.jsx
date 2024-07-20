@@ -17,56 +17,72 @@ import Update from "./routes/Update";
 import GoogleCallback from "./routes/GoogleCallback";
 function App() {
   return (
-    <>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <ShowAllBlogs />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/blog/:id"
-            element={
-              <RequireAuth>
-                <ShowBlog />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <RequireAuth>
-                <ShowAllUsers />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/user/:id"
-            element={
-              <RequireAuth>
-                <ShowUser />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/settings/:id"
-            element={
-              <RequireAuth>
-                <Settings />
-              </RequireAuth>
-            }
-          />
-          <Route path="/auth/github/callback" element={<GithubCallback />} />
-          <Route path="/auth/google/callback" element={<GoogleCallback/>} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset" element={<ResetPassword />} />
-          <Route path="/reset-request" element={<ResetRequest />} />
-        </Routes>
-    </>
+    <div className="bg-gradient-to-b from-blue-100">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <ShowAllBlogs />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/blog/:id"
+          element={
+            <RequireAuth>
+              <ShowBlog />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user"
+          element={
+            <RequireAuth>
+              <ShowAllUsers />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user/:id"
+          element={
+            <RequireAuth>
+              <ShowUser />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/your-blogs"
+          element={
+            <RequireAuth>
+              <YourBlogs />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/blog/:id/edit"
+          element={
+            <RequireAuth>
+              <Update />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/settings/:id"
+          element={
+            <RequireAuth>
+              <Settings />
+            </RequireAuth>
+          }
+        />
+        <Route path="/auth/github/callback" element={<GithubCallback />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route path="/reset-request" element={<ResetRequest />} />
+      </Routes>
+    </div>
   );
 }
 

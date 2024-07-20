@@ -61,7 +61,7 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="bg-gradient-to-b from-blue-100 flex items-center justify-center h-screen bg-gray-100">
       <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg">
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
           Login
