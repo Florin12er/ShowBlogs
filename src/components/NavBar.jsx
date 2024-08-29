@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ function NavBar() {
 
     try {
       await axios.delete(
-        "https://blogapi-production-fb2f.up.railway.app/user/logout",
+        "https://blogapi-1jcl.onrender.com/user/logout",
         {
           withCredentials: true,
           headers: {

@@ -18,7 +18,7 @@ function YourBlogs() {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `https://blogapi-production-fb2f.up.railway.app/blog/user/${userId}?page=${currentPage}&limit=10`,
+          `https://blogapi-1jcl.onrender.com/blog/user/${userId}?page=${currentPage}&limit=10`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ function YourBlogs() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `https://blogapi-production-fb2f.up.railway.app/blog/${id}`,
+        `https://blogapi-1jcl.onrender.com/blog/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

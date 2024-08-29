@@ -34,7 +34,7 @@ function ShowBlog() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://blogapi-production-fb2f.up.railway.app/blog/${id}`,
+                    `https://blogapi-1jcl.onrender.com/blog/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ function ShowBlog() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment`,
+                `https://blogapi-1jcl.onrender.com/blog/${id}/comment`,
         { content: commentContent },
         {
           headers: {
@@ -99,7 +99,7 @@ function ShowBlog() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`,
+        `https://blogapi-1jcl.onrender.com/blog/${id}/comment/${commentId}`,
         { content: updatedContent },
         {
           headers: {
@@ -125,7 +125,7 @@ function ShowBlog() {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://blogapi-production-fb2f.up.railway.app/blog/${id}/comment/${commentId}`,
+        `https://blogapi-1jcl.onrender.com/blog/${id}/comment/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -142,9 +142,14 @@ function ShowBlog() {
     }
   };
 
-  if (!blog) {
-    return <p>Loading...</p>;
+     if (!blog) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
+
 
   // Sanitize and render blog content
   const sanitizedHtml = DOMPurify.sanitize(blog.content, {

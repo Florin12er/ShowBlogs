@@ -15,7 +15,7 @@ function useBlogData() {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          "https://blogapi-production-fb2f.up.railway.app/blog",
+          "https://blogapi-1jcl.onrender.com/blog",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ function useBlogData() {
         await Promise.all(
           jsonData.map(async (item) => {
             const likeResponse = await fetch(
-              `https://blogapi-production-fb2f.up.railway.app/user/blog/${item._id}/likes/count`,
+              `https://blogapi-1jcl.onrender.com/user/blog/${item._id}/likes/count`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ function useBlogData() {
               },
             );
             const dislikeResponse = await fetch(
-              `https://blogapi-production-fb2f.up.railway.app/user/blog/${item._id}/dislikes/count`,
+              `https://blogapi-1jcl.onrender.com/user/blog/${item._id}/dislikes/count`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

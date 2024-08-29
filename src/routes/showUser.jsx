@@ -33,7 +33,7 @@ function ShowUser() {
       // Fetch user details (only needed once)
       if (!user) {
         const userResponse = await fetch(
-          `https://blogapi-production-fb2f.up.railway.app/user/${id}`,
+          `https://blogapi-1jcl.onrender.com/user/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ function ShowUser() {
 
       // Fetch blogs authored by the user
       const blogsResponse = await fetch(
-        `https://blogapi-production-fb2f.up.railway.app/blog/user/${id}?page=${page}&limit=10`,
+        `https://blogapi-1jcl.onrender.com/blog/user/${id}?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

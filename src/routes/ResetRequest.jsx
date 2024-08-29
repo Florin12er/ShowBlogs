@@ -11,7 +11,7 @@ function ResetRequest() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://blogapi-production-fb2f.up.railway.app/user/request-reset",
+        "https://blogapi-1jcl.onrender.com/user/request-reset",
         { email },
       );
       if (response.status === 200) {

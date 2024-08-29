@@ -4,7 +4,7 @@ import defaultImage from "../../public/icon.jpg"; // Adjust the path based on yo
 import NavBar from "../components/NavBar";
 
 const apiKey = import.meta.env.VITE_APP_API_KEY;
-const API_URL = "https://blogapi-production-fb2f.up.railway.app"; // Add this line
+const API_URL = "https://blogapi-1jcl.onrender.com"; // Add this line
 
 function ShowAllUsers() {
   const [users, setUsers] = useState([]);

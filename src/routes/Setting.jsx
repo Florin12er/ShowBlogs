@@ -20,7 +20,7 @@ function Settings() {
       try {
         const token = localStorage.getItem("token");
         const userResponse = await fetch(
-          `https://blogapi-production-fb2f.up.railway.app/user/${id}`,
+          `https://blogapi-1jcl.onrender.com/user/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ function Settings() {
           email: userData.email || "",
         });
         if (userData.profilePicture) {
-          setPreviewUrl(`https://blogapi-production-fb2f.up.railway.app/uploads/${userData.profilePicture}`);
+          setPreviewUrl(`https://blogapi-1jcl.onrender.com/uploads/${userData.profilePicture}`);
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -73,7 +73,7 @@ function Settings() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://blogapi-production-fb2f.up.railway.app/user/settings",
+        "https://blogapi-1jcl.onrender.com/user/settings",
         {
           method: "PATCH",
           headers: {
@@ -97,7 +97,7 @@ function Settings() {
         formData.append("profilePicture", profilePicture);
 
         const uploadResponse = await fetch(
-          "https://blogapi-production-fb2f.up.railway.app/user/upload",
+          "https://blogapi-1jcl.onrender.com/user/upload",
           {
             method: "POST",
             headers: {

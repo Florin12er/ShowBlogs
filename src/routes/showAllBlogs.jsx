@@ -21,8 +21,8 @@ function ShowAllBlogs() {
       setLoading(true);
       const token = localStorage.getItem("token");
       const url = query
-        ? `https://blogapi-production-fb2f.up.railway.app/blog/search?query=${encodeURIComponent(query)}&page=${page}&limit=12`
-        : `https://blogapi-production-fb2f.up.railway.app/blog?page=${page}&limit=12`;
+        ? `https://blogapi-1jcl.onrender.com/blog/search?query=${encodeURIComponent(query)}&page=${page}&limit=12`
+        : `https://blogapi-1jcl.onrender.com/blog?page=${page}&limit=12`;
 
       const response = await fetch(url, {
         headers: {
@@ -84,7 +84,7 @@ function ShowAllBlogs() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://blogapi-production-fb2f.up.railway.app/user/blog/${id}/${action}`,
+        `https://blogapi-1jcl.onrender.com/user/blog/${id}/${action}`,
         {
           method: "POST",
           headers: {

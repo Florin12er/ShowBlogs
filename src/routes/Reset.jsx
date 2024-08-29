@@ -14,7 +14,7 @@ function ResetPassword() {
       const requestBody = { email, resetCode: code, newPassword };
       console.log("Request body:", requestBody);
       const response = await axios.post(
-        "https://blogapi-production-fb2f.up.railway.app/user/reset",
+        "https://blogapi-1jcl.onrender.com/user/reset",
         requestBody,
         {
           withCredentials: true,
