@@ -102,7 +102,7 @@ function YourBlogs() {
                   <div key={blog._id} className="bg-white shadow-md rounded-lg p-4">
                     {blog.thumbnail && (
                       <img
-                        src={`https://blogapi-production-fb2f.up.railway.app${blog.thumbnail}`}
+                        src={`https://blogapi-1jcl.onrender.com${blog.thumbnail}`}
                         alt={blog.title}
                         className="w-full h-56 object-cover mb-4 rounded"
                       />

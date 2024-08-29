@@ -12,7 +12,7 @@ function truncateHTMLContent(html, maxLength) {
 }
 
 function ShowUser() {
-  const API_URL = "https://blogapi-production-fb2f.up.railway.app";
+  const API_URL = "https://blogapi-1jcl.onrender.com";
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

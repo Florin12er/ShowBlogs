@@ -25,7 +25,7 @@ function Update() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://blogapi-production-fb2f.up.railway.app/blog/${id}`,
+          `https://blogapi-1jcl.onrender.com/blog/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ function Update() {
         setEditorContent(blog.content);
         if (blog.thumbnail) {
           setThumbnailPreview(
-            `https://blogapi-production-fb2f.up.railway.app${blog.thumbnail}`,
+            `https://blogapi-1jcl.onrender.com${blog.thumbnail}`,
           );
         }
       } catch (error) {
@@ -101,7 +101,7 @@ function Update() {
       }
 
       const response = await axios.put(
-        `https://blogapi-production-fb2f.up.railway.app/blog/${id}`,
+        `https://blogapi-1jcl.onrender.com/blog/${id}`,
         formData,
         {
           headers: {

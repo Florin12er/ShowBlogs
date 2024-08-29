@@ -201,7 +201,7 @@ function ShowBlog() {
             <div className="flex justify-center">
               {blog.thumbnail && (
                 <img
-                  src={`https://blogapi-production-fb2f.up.railway.app${blog.thumbnail}`}
+                  src={`https://blogapi-1jcl.onrender.com${blog.thumbnail}`}
                   alt={blog.title}
                   className="w-96 h-64 object-cover"
                 />
